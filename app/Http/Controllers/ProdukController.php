@@ -27,26 +27,32 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        
 
-        // $produk = Produk::all();
-        // return view('produk.index', ['produk'=>$produk]);
-
-        $batas=5;
-        // dd('adasdsa');
-        // $produk = Produk::join('Kategori', 'kategoris.id_kategori', '=', 'produk.id_kategori')->orderBy('produk.id_produk', 'desc')->paginate($batas);
-        // $no = $batas * ($produk->currentPage()-1);
-        $produk = Produk::all();
-        // dd($produk->kategori->nama_kategori);
+    public function listItems($batas){
+        $produk = new Produk();
+        $produk = $produk->limit($batas)->get();
         $data = array(
             'produk' => $produk,
         );
-        // $no = $batas * ($produk->currentPage() -1);
-        return view('produk.indexx', $data);
-        // return view('produk.index', compact('produk', 'no'));
+        return $data;
     }
+
+    public function index(Request $request)
+    {
+        $batas=5;
+        $produk = new Produk();
+        $page_number = $request->page;
+        $offset = ($page_number - 1)*$batas;
+        $page = round((($produk->count())/$batas)+1);
+        $produk = $produk->limit($batas)->offset($offset)->get();
+        $data = array(
+            'produk' => $produk,
+            'page' => $page,
+            'offset' => $offset,
+            
+        );
+        return view('produk.indexx', $data);
+    }   
 
     /**
      * Show the form for creating a new resource.
@@ -81,7 +87,8 @@ class ProdukController extends Controller
         $produk->harga_jual = $request['harga'];
         $produk->save();
 
-        return Redirect::route('produk.indexx');
+        // return Redirect::route('produk.indexx');
+        return Redirect::to('/produk');
         // return view('produk.index');
 
     }
@@ -127,7 +134,7 @@ class ProdukController extends Controller
         $produk->harga_jual = $request['harga'];
         $produk->update();
 
-        return Redirect::route('produk.indexx');
+        return Redirect::to('/produk');
     }
 
     /**
@@ -139,10 +146,9 @@ class ProdukController extends Controller
     public function destroy($id)
     {
         $produk = Produk::find($id);
-        $produk = delete();
+        $produk->delete();
 
-        return Redirect::route('produk.indexx');
-
+        return Redirect::to('/produk');
     }
 }
     

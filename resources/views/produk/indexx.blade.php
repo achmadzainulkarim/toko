@@ -24,10 +24,11 @@
 								</tr>
 							</thead>
 							<tbody>
+								<?php $index = 1 ?>
 								@foreach($produk as $data)
 
 									<tr>
-										<td>{{ $data->id_produk }}</td>
+										<td>{{ $index }}</td>
 										<td>{{ $data->kategori->nama_kategori }}</td>
 										<td>{{ $data->nama_produk }}</td>
 										<td>{{ $data->harga_jual }}</td>
@@ -40,9 +41,15 @@
 										</td>
 
 									</tr>
+									<?php $index++ ?>
 								@endforeach
 							</tbody>
-						</table> 
+						</table>
+						<?php
+							for ($i=1; $i <= $page; $i++) { 
+								echo '<a href="produk?page='.$i.'" class="btn btn-default">'.$i.'</a>';
+							}
+						?>
 					</div>
 				</div>	
 			</div>
