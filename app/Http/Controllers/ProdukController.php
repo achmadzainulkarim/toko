@@ -75,14 +75,14 @@ class ProdukController extends Controller
         //validate digunakan utk memastikan data yg d input sdh valid
         $this->validate($request, $this->aturan, $this->pesan);
 
-        // $produk = new Produk;
-        // $produk->nama_produk = $request['nama'];
-        // $produk->id_kategori = $request['kategori'];
-        // $produk->harga_jual = $request['harga'];
-        // $produk->save();
+        $produk = new Produk;
+        $produk->nama_produk = $request['nama'];
+        $produk->id_kategori = $request['kategori'];
+        $produk->harga_jual = $request['harga'];
+        $produk->save();
 
-        // return Redirect::route('produk.indexx');
-        return view('produk.index');
+        return Redirect::route('produk.indexx');
+        // return view('produk.index');
 
     }
 
@@ -145,3 +145,4 @@ class ProdukController extends Controller
 
     }
 }
+    
